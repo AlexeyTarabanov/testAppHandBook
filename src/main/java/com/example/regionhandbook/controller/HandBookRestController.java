@@ -20,7 +20,17 @@ public class HandBookRestController {
 
     public final HandBookService handBookService;
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<HandBook>> getAllHandBooks() {
+        List<HandBook> handBooks = handBookService.getAll();
+
+        if (handBooks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(handBooks, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "findById/{id}", method = RequestMethod.GET)
     public ResponseEntity<HandBook> getHandBook(@PathVariable("id") Long id) {
         if(id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -34,7 +44,7 @@ public class HandBookRestController {
         return new ResponseEntity<>(handBook, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping("/save")
     public ResponseEntity<HandBook> saveHandBook(@RequestBody @Valid HandBook handBook) {
         HttpHeaders headers = new HttpHeaders();
         if (handBook == null) {
@@ -45,18 +55,18 @@ public class HandBookRestController {
         return new ResponseEntity<>(handBook, headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HandBook> updateHandBook(@RequestBody @Valid HandBook handBook, UriComponentsBuilder builder) {
         HttpHeaders headers = new HttpHeaders();
         if (handBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        handBookService.save(handBook);
+        handBookService.update(handBook);
         return new ResponseEntity<>(handBook, headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HandBook> deleteHandBook(@PathVariable("id") Long id) {
         HandBook handBook = handBookService.findById(id);
         if (handBook == null) {
@@ -66,15 +76,4 @@ public class HandBookRestController {
         handBookService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<HandBook>> getAllHandBooks() {
-        List<HandBook> handBooks = handBookService.getAll();
-
-        if (handBooks.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(handBooks, HttpStatus.OK);
-    }
-
 }

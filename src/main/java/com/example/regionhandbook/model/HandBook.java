@@ -13,6 +13,6 @@ public class HandBook {
     private Long id;
     @Column(name = "title")
     private String title;
-    @Column(name = "short_title")
-    private String shortTitle;
+    @Column(name = "abbreviation")
+    private String abbreviation;
 }

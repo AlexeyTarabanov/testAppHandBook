@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MappedTypes(HandBook.class)
 @SpringBootApplication
-@MapperScan("com.example.regionhandbook.mapper")
+@MapperScan("com.example.regionhandbook.repository")
 public class RegionHandbookApplication {
 
     public static void main(String[] args) {

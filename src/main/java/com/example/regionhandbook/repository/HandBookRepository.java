@@ -1,9 +1,14 @@
 package com.example.regionhandbook.repository;
 
 import com.example.regionhandbook.model.HandBook;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HandBookRepository extends JpaRepository<HandBook, Long> {
+import java.util.List;
 
-    HandBook getById(Long id);
+public interface HandBookRepository {
+
+    List<HandBook> findAll();
+    HandBook findById(Long id);
+    void save(HandBook handBook);
+    void update(HandBook handBook);
+    void deleteById(Long id);
 }
