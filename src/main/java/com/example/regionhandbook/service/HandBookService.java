@@ -4,6 +4,8 @@ import com.example.regionhandbook.model.HandBook;
 import com.example.regionhandbook.repository.HandBookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +17,13 @@ public class HandBookService {
 
     public final HandBookRepository handBookRepository;
 
+    @CachePut(cacheNames = "handBooks")
     public List<HandBook> getAll() {
         log.info("In HandBookService getAll");
         return handBookRepository.findAll();
     }
 
+    @Cacheable(cacheNames = "handBook_Id")
     public HandBook findById(Long id) {
         log.info("In HandBookService findById {}", id);
         return handBookRepository.findById(id);
